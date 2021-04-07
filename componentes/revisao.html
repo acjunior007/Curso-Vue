@@ -1,0 +1,36 @@
+<meta charset="utf-8">  
+<script src="https://unpkg.com/vue"></script>
+    <div id="app">
+        <Contador></Contador>
+        <contador></contador>
+        <CONTADOR></CONTADOR>
+    </div>    
+<script>   
+    Vue.component('contador', {
+        template: `
+            <div>            
+                <span>  {{ contador }} </span>
+                <button @click="somar">+</button>
+                <button @click="diminuir">-</button>
+            </div>                
+        `,
+        data() {
+            return {
+                contador: 0
+            }
+        },
+        methods: {
+            somar() {
+                this.contador += 1
+            },
+            diminuir() {
+                this.contador -= 1
+            }            
+        }        
+    })
+    new Vue({
+        el: "#app",
+
+    })
+
+</script>
