@@ -1,22 +1,27 @@
 <template>
 	<div id="app">
 		<h1>Tarefas</h1>
+		<TasksProgress :progress="progress" />
 		<NewTask @taskAdded="addTask" />
-		<TaskGrid :tasks="tasks"></TaskGrid>
+		<TaskGrid :tasks="tasks"
+			@taskDeleted="taskDelete"
+			@taskStateChanged="toggleTaskState"
+		></TaskGrid>
 	</div>
 </template>
 
 <script>
 
+import TasksProgress from './components/TasksProgress'
 import TaskGrid from './components/TaskGrid'
 import NewTask from './components/NewTask'
 
 export default {
-	components: {TaskGrid, NewTask},
+	components: {TasksProgress, TaskGrid, NewTask},
 	data() {
 		return {
 			tasks: [
-				{ name: 'Lavar a louça', pending: false },
+				// { name: 'Lavar a louça', pending: false },
 				// { name: 'Comprar blusa', pending: true },
 				// { name: 'Ligar a Tim', pending: true },
 			]
@@ -32,7 +37,32 @@ export default {
 					pending: task.pending || true
 				})
 			}
+		},
+		taskDelete(i) {
+			this.tasks.splice(i, 1)
+		},
+		toggleTaskState(i) {
+			this.tasks[i].pending = !this.tasks[i].pending
 		}
+	},
+	computed: {
+		progress() {
+			const total = this.tasks.length
+			const done = this.tasks.filter(t => !t.pending).length
+			return Math.round(done / total * 100) || 0
+		}
+	},
+	watch: {
+		tasks: {
+			deep: true,
+			handler(){
+				localStorage.setItem('tasks', JSON.stringify(this.tasks))
+			}
+		}
+	},
+	created(){
+		const json = localStorage.getItem('tasks')
+		this.tasks = JSON.parse(json) || []
 	}
 }
 </script>
