@@ -31,7 +31,7 @@
 				</Rotulo>
 				<Rotulo nome="Prioridade">
 					<select v-model="prioridade" >
-						<option v-for="p in prioridades" ::key="p.codigo" 
+						<option v-for="p in prioridades" :key="p.codigo" 
 							:value="p.codigo"
 							:selected="p.codigo === 3"	>
 							{{p.nome}}
@@ -61,7 +61,7 @@
 				<Rotulo nome="Marque as Opções">
 					<span>
 						<ul>
-							<li v-for="c in caracteristicas" ::key="c">
+							<li v-for="c in caracteristicas" :key="c">
 								{{ c }}
 							</li>
 						</ul>
